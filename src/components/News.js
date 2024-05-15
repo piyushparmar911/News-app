@@ -68,7 +68,7 @@ export class News extends Component {
     render() {
       return (
       <div className="container ">
-        <h1 className="text-center my-4">{this.props.heading}</h1>
+        <h1 className="text-center my-4">{this.props.heading} </h1>
         <div className="mx-2 row">
         {this.state.articals.map((element)=>{  
             return <div className="col-md-3" key={element.url}>
