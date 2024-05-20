@@ -9,7 +9,7 @@ export class News extends Component {
     super(props);
     this.state = {
       articles: [],
-      loding: false,
+      loading: false,
       page: 1,
       totalResults: 0,
     };
@@ -28,15 +28,18 @@ export class News extends Component {
   };
 
   async updateNews() {
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=033410d6447244e1b724971bea667404&pageSize=${this.props.pageSize}&page=${this.state.page}`;
-    this.setState({ loding: true });
+    this.props.ProgressBar(10);
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7745e772c98a4a76aea82e42a6315c91&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+    this.setState({ loading: true });
     let data = await fetch(url);
+    this.props.ProgressBar(30);
     let parsedata = await data.json();
     this.setState({
       articles: parsedata.articles,
       totalResults: parsedata.totalResults,
-      loding: false,
+      loading: false,
     });
+    this.props.ProgressBar(100);
   }
   async componentDidMount() {
     this.updateNews();
@@ -44,7 +47,7 @@ export class News extends Component {
 
   fetchMoreData = async () => {
     this.setState({ page: this.state.page + 1 }, async() => {
-      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=033410d6447244e1b724971bea667404&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7745e772c98a4a76aea82e42a6315c91&pageSize=${this.props.pageSize}&page=${this.state.page}`;
       let data = await fetch(url);
       let parsedata = await data.json();
       this.setState({
@@ -66,7 +69,7 @@ export class News extends Component {
           >
           {this.props.heading}{" "}
         </h1>
-            {this.state.loding  && <Spinner/>}
+            {this.state.loading  && <Spinner/>}
             {/* <Spinner/>             */}
 
         <InfiniteScroll
