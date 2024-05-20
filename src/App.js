@@ -18,8 +18,8 @@ export default class App extends Component {
       alert: null,
     };
   }
-
-
+  
+  
   toggleMode = () => {
     if (this.state.mode === 'light') {
       this.setState({
@@ -36,12 +36,13 @@ export default class App extends Component {
       });
       document.body.style.backgroundColor = 'white';
     }
+    
   };  
   render() {
     return (
       <div className="" style={{background: this.state.mode1}} > 
         <Router>
-          <Navbar mode={this.state.mode} toggleMode={this.toggleMode} modeText={this.state.modeText}/>
+          <Navbar mode={this.state.mode}  toggleMode={this.toggleMode} modeText={this.state.modeText}/>
           
 
           <Routes>
