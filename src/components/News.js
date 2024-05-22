@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import NewsItem from "./NewsItem";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
+
+
+
 import Spinner from "./Spinner";
 
 const News = ({ country, pageSize, category, heading, ProgressBar, mode, mode1 }) => {
@@ -13,7 +16,7 @@ const News = ({ country, pageSize, category, heading, ProgressBar, mode, mode1 }
   
   const fetchNews = async () => {
     ProgressBar(10);
-    const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=9133c080e4a94711a4d677e6cd343d5f&pageSize=${pageSize}&page=${page}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=bb5ec218bfeb405db658994716df66c9&pageSize=${pageSize}&page=${page}`;
     setLoading(true);
     ProgressBar(30);
       let data = await fetch(url);
@@ -34,7 +37,7 @@ const News = ({ country, pageSize, category, heading, ProgressBar, mode, mode1 }
   const fetchMoreData = async () => {
     const nextPage = page + 1;
     setPage(nextPage);
-    const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=9133c080e4a94711a4d677e6cd343d5f&pageSize=${pageSize}&page=${nextPage}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=bb5ec218bfeb405db658994716df66c9&pageSize=${pageSize}&page=${nextPage}`;
       let data = await fetch(url);
       let parsedData = await data.json();
       setArticles(articles.concat(parsedData.articles));
@@ -44,7 +47,7 @@ const News = ({ country, pageSize, category, heading, ProgressBar, mode, mode1 }
   return (
     <div className={`container text-${mode1}`} style={{ background: mode1 }}>
       <h1 className={`text-center text-${mode === "dark" ? "white" : "dark"} my-4`}>
-        {heading}
+        Newsapp {heading} - Top Headlines
       </h1>
       {loading && <Spinner />}
       <InfiniteScroll

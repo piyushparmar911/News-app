@@ -40,6 +40,7 @@ const App = () => {
   return (
     <div style={{ background: mode1 }}>
       <Router>
+        <Navbar mode={mode} toggleMode={toggleMode} modeText={modeText} />
         <ProgressBar
           completed={completed}
           height="2px"
@@ -47,7 +48,6 @@ const App = () => {
           borderRadius="0px"
           labelSize="0px"
         />
-        <Navbar mode={mode} toggleMode={toggleMode} modeText={modeText} />
         <Routes>
           <Route path="/general" element={<News ProgressBar={updateProgressBar} key="general" heading="General" pageSize={pageSize} country="in" category="general" mode={mode} />} />
           <Route path="/business" element={<News ProgressBar={updateProgressBar} key="business" heading="Business" pageSize={pageSize} country="in" category="business" mode={mode} />} />

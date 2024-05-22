@@ -1,11 +1,11 @@
 import React from 'react'
-import Earth from './Earth.gif'
+import spiner from './spiner.gif'
 
 export default function Spinner() {
   return (
     <div>
       <div className='justify-content-center d-flex my-3' >
-        <img src={Earth} alt="Loading"  style={{height: "100px", width: "100px" }}/>
+        <img src={spiner} alt="Loading"  style={{height: "150px", width: "150px" }}/>
       </div>
       
     </div>
