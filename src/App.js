@@ -1,4 +1,4 @@
-import React, { Component} from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import News from "./components/News";
 import ProgressBar from "@ramonak/react-progress-bar";
@@ -8,69 +8,58 @@ import {
   Route,
 } from "react-router-dom";
 
-export default class App extends Component {
-  pageSize = 8;
-  constructor(props) {
-    super(props);
-    this.state = {
-      mode: 'light',
-      mode1: 'white',
-      modeText: 'light mode',
-      alert: null,
-    };
-  }
-  toggleMode = () => {
-    if (this.state.mode === 'light') {
-      this.setState({
-        mode1: 'black',
-        mode: 'dark',
-        modeText: 'dark mode'
-      });
+const App = () => {
+  const pageSize = 8;
+  const [mode, setMode] = useState('light');
+  const [mode1, setMode1] = useState('white');
+  const [modeText, setModeText] = useState('light mode');
+  const [completed, setCompleted] = useState(0);
+
+  const toggleMode = () => {
+    if (mode === 'light') {
+      setMode('dark');
+      setMode1('black');
+      setModeText('dark mode');
       document.body.style.backgroundColor = 'lightgrey';
     } else {
-      this.setState({
-        mode: 'light',
-        mode1: 'white',
-        modeText: 'light mode'
-      });
+      setMode('light');
+      setMode1('white');
+      setModeText('light mode');
       document.body.style.backgroundColor = 'white';
     }
-  };  
+  };
 
-  state =({
-    completed: 0,
-  })
+  useEffect(() => {
+    document.body.style.backgroundColor = mode === 'light' ? 'white' : 'lightgrey';
+  }, [mode]);
 
-  ProgressBar = (completed) => {
-    this.setState({completed: completed});
-  }
-    
-  render() {
-    return (
-      <div className="" style={{background: this.state.mode1}} > 
-        <Router>
-      
-      <ProgressBar
-      completed={this.state.completed}
-      height={"2px"}
-      bgColor="red"
-      borderRadius="0px"
-      labelSize="0px"
-    />
-          <Navbar  mode={this.state.mode}  toggleMode={this.toggleMode} modeText={this.state.modeText}/>
-          
+  const updateProgressBar = (completed) => {
+    setCompleted(completed);
+  };
 
-          <Routes>
-            <Route   exact path="/general"  element={<News ProgressBar={this.ProgressBar}  key="general" heading="General" pageSize={this.pageSize} country="in" category="general" mode={this.state.mode} />}></Route>
-            <Route   exact path="/business" element={<News  ProgressBar={this.ProgressBar} key="business" heading="Business" pageSize={this.pageSize} country="in" category="business" />} mode={this.state.mode} ></Route>
-            <Route   exact path="/entertainment"  element={<News ProgressBar={this.ProgressBar} key="entertainment" heading="Entertainment" pageSize={this.pageSize} country="in" category="entertainment"mode={this.state.mode}  />}></Route>
-            <Route   exact path="/health"  element={<News ProgressBar={this.ProgressBar} key="health" heading="Health" pageSize={this.pageSize} country="in" category="health" mode={this.state.mode} />}></Route>
-            <Route   exact path="/science"  element={<News ProgressBar={this.ProgressBar} key="science" heading="Science" pageSize={this.pageSize} country="in" category="science" mode={this.state.mode} />}></Route>
-            <Route   exact path="/sports"  element={<News ProgressBar={this.ProgressBar} key="sports"  heading="Sports" pageSize={this.pageSize} country="in" category="sports" mode={this.state.mode} />}></Route>
-            <Route   exact path="/technology"  element={<News ProgressBar={this.ProgressBar} key="technology" heading="Technology" pageSize={this.pageSize} country="in" category="technology" mode={this.state.mode} />}></Route>
-          </Routes>
-        </Router>
-      </div>
-    );
-  }
-}
+  return (
+    <div style={{ background: mode1 }}>
+      <Router>
+        <ProgressBar
+          completed={completed}
+          height="2px"
+          bgColor="red"
+          borderRadius="0px"
+          labelSize="0px"
+        />
+        <Navbar mode={mode} toggleMode={toggleMode} modeText={modeText} />
+        <Routes>
+          <Route path="/general" element={<News ProgressBar={updateProgressBar} key="general" heading="General" pageSize={pageSize} country="in" category="general" mode={mode} />} />
+          <Route path="/business" element={<News ProgressBar={updateProgressBar} key="business" heading="Business" pageSize={pageSize} country="in" category="business" mode={mode} />} />
+          <Route path="/entertainment" element={<News ProgressBar={updateProgressBar} key="entertainment" heading="Entertainment" pageSize={pageSize} country="in" category="entertainment" mode={mode} />} />
+          <Route path="/health" element={<News ProgressBar={updateProgressBar} key="health" heading="Health" pageSize={pageSize} country="in" category="health" mode={mode} />} />
+          <Route path="/science" element={<News ProgressBar={updateProgressBar} key="science" heading="Science" pageSize={pageSize} country="in" category="science" mode={mode} />} />
+          <Route path="/sports" element={<News ProgressBar={updateProgressBar} key="sports" heading="Sports" pageSize={pageSize} country="in" category="sports" mode={mode} />} />
+          <Route path="/technology" element={<News ProgressBar={updateProgressBar} key="technology" heading="Technology" pageSize={pageSize} country="in" category="technology" mode={mode} />} />
+        </Routes>
+      </Router>
+    </div>
+  );
+};
+
+export default App;

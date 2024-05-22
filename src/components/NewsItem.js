@@ -1,16 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export class NewsItem extends Component {
-    
-
-    render() {
-      let {title, description,imageUrl,Date,author,source,mode,mode1, newsUrl} = this.props;
-    return (
+export default function NewsItem({title, description,imageUrl,Date,author,source,mode,mode1, newsUrl}) {
+  return (
+    <div>
       <div className="px-2 my-3 " >
         <span className="badge bg-danger my-2">{source}</span>
         <div className={`card bg-${mode} ` }>
         <img className={`img-fluid img-thumbnail bg-${mode}`} style={{ height: "200px", width: "280px"}} src={imageUrl} alt="" />
   <div className="card-body">
+
+
     <h5 className={`card-title text-${mode1}`}>{title}...</h5>
     <p className={`card-text text-${mode1}`}>{description}...</p>
     <p className={`card-text text-muted text-${mode1}`} ><small>Last Updated by {author} on {Date}</small></p>
@@ -18,8 +17,8 @@ export class NewsItem extends Component {
   </div>
 </div>     
       </div>
-    )
-  }
+    
+    </div>
+  )
 }
 
-export default NewsItem

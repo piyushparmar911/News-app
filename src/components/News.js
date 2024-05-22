@@ -1,118 +1,94 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import NewsItem from "./NewsItem";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Spinner from "./Spinner";
 
-export class News extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      articles: [],
-      loading: false,
-      page: 1,
-      totalResults: 0,
-    };
-    document.title = this.props.heading;
-  }
-  static defaultProps = {
-    country: "in",
-    pageSize: 10,
-    category: "general",
-  };
-
-  static propTypes = {
-    country: PropTypes.string,
-    pageSize: PropTypes.number,
-    category: PropTypes.string,
-  };
-
-  async updateNews() {
-    this.props.ProgressBar(10);
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7745e772c98a4a76aea82e42a6315c91&pageSize=${this.props.pageSize}&page=${this.state.page}`;
-    this.setState({ loading: true });
-    let data = await fetch(url);
-    this.props.ProgressBar(30);
-    let parsedata = await data.json();
-    this.setState({
-      articles: parsedata.articles,
-      totalResults: parsedata.totalResults,
-      loading: false,
-    });
-    this.props.ProgressBar(100);
-  }
-  async componentDidMount() {
-    this.updateNews();
-  }
-
-  fetchMoreData = async () => {
-    this.setState({ page: this.state.page + 1 }, async() => {
-      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7745e772c98a4a76aea82e42a6315c91&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+const News = ({ country, pageSize, category, heading, ProgressBar, mode, mode1 }) => {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
+  
+  
+  const fetchNews = async () => {
+    ProgressBar(10);
+    const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=9133c080e4a94711a4d677e6cd343d5f&pageSize=${pageSize}&page=${page}`;
+    setLoading(true);
+    ProgressBar(30);
       let data = await fetch(url);
-      let parsedata = await data.json();
-      this.setState({
-        articles: this.state.articles.concat(parsedata.articles),
-        totalResults: parsedata.totalResults,
-      });
-    })
+      let parsedData = await data.json();
+      setArticles(parsedData.articles);
+      setTotalResults(parsedData.totalResults);
+      setLoading(false);
+      ProgressBar(100);
+      setLoading(false);
+      ProgressBar(100);
   };
-  render() {
-    return (
-      <div
-        className={`container  text-${this.props.mode1}`}
-        style={{ background: this.props.mode1 }}
-      >
-        <h1
-          className={`text-center text-${
-            this.props.mode === "dark" ? "white" : "dark"
-          }  my-4`}
-          >
-          {this.props.heading}{" "}
-        </h1>
-            {this.state.loading  && <Spinner/>}
-            {/* <Spinner/>             */}
+    
+      useEffect(() => {
+        document.title = heading; 
+        fetchNews();
+      },[]); 
 
-        <InfiniteScroll
-          dataLength={this.state.articles.length}
-          next={this.fetchMoreData}
-          hasMore={this.state.articles.length !== this.state.totalResults}
-          loader={<Spinner/>}
-          >
-          <div className="mx-2 row">
-            {this.state.articles.map((element) => {
-              return (
-                <div className="col-md-3" key={element.url}>
-                  <NewsItem
-                    mode={this.props.mode}
-                    mode1={this.props.mode === "dark" ? "light" : "dark"}
-                    title={element.title ? element.title.slice(0, 45) : ""}
-                    source={element.source.name}
-                    Date={
-                      element.publishedAt
-                        ? element.publishedAt.slice(0, 10)
-                        : ""
-                    }
-                    author={element.author ? element.author : ""}
-                    description={
-                      element.description
-                        ? element.description.slice(0, 70)
-                        : ""
-                    }
-                    imageUrl={
-                      element.urlToImage
-                        ? element.urlToImage
-                        : "https://static.dw.com/image/69054620_6.jpg"
-                    }
-                    newsUrl={element.url}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </InfiniteScroll>
-      </div>
-    );
-  }
-}
+  const fetchMoreData = async () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=9133c080e4a94711a4d677e6cd343d5f&pageSize=${pageSize}&page=${nextPage}`;
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      setArticles(articles.concat(parsedData.articles));
+      setTotalResults(parsedData.totalResults);
+  };
+
+  return (
+    <div className={`container text-${mode1}`} style={{ background: mode1 }}>
+      <h1 className={`text-center text-${mode === "dark" ? "white" : "dark"} my-4`}>
+        {heading}
+      </h1>
+      {loading && <Spinner />}
+      <InfiniteScroll
+        dataLength={articles.length}
+        next={fetchMoreData}
+        hasMore={articles.length !== totalResults}
+        loader={<Spinner />}
+      >
+        <div className="mx-2 row">
+          {articles.map((element) => (
+            <div className="col-md-3" key={element.url}>
+              <NewsItem
+                mode={mode}
+                mode1={mode === "dark" ? "light" : "dark"}
+                title={element.title ? element.title.slice(0, 45) : ""}
+                source={element.source.name}
+                Date={element.publishedAt ? element.publishedAt.slice(0, 10) : ""}
+                author={element.author ? element.author : ""}
+                description={element.description ? element.description.slice(0, 70) : ""}
+                imageUrl={element.urlToImage ? element.urlToImage : "https://static.dw.com/image/69054620_6.jpg"}
+                newsUrl={element.url}
+              />
+            </div>
+          ))}
+        </div>
+      </InfiniteScroll>
+    </div>
+  );
+};
+
+News.defaultProps = {
+  country: "in",
+  pageSize: 10,
+  category: "general",
+};
+
+News.propTypes = {
+  country: PropTypes.string,
+  pageSize: PropTypes.number,
+  category: PropTypes.string,
+  heading: PropTypes.string,
+  ProgressBar: PropTypes.func,
+  mode: PropTypes.string,
+  mode1: PropTypes.string,
+};
 
 export default News;
