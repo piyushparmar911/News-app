@@ -47,7 +47,7 @@ const News = ({ country, pageSize, category, heading, ProgressBar, mode, mode1 }
   return (
     <div className={`container text-${mode1}`} style={{ background: mode1 }}>
       <h1 className={`text-center text-${mode === "dark" ? "white" : "dark"} my-4`}>
-        Newsapp {heading} - Top Headlines
+        Newswave {heading} - Top Headlines
       </h1>
       {loading && <Spinner />}
       <InfiniteScroll

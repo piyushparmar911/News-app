@@ -1,5 +1,5 @@
 # News-App
-
+![System Overview](/Screenshot.png)
 ## Overview
 The News-App is a React-based web application that displays news articles categorized by different topics. It provides users with a streamlined interface to browse through multiple pages of news articles, ensuring they stay informed about the latest happenings across various domains.
 
