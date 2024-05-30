@@ -1,8 +1,15 @@
-import React from 'react'; 
-import { Link } from "react-router-dom";
+import React, {useEffect} from 'react'; 
+import { Link , useLocation} from "react-router-dom";
 import logo2 from './logo2.png';
 
 export default function Navbar({mode,mode1,toggleMode,modeText}) {
+  
+  let location = useLocation();
+  
+  useEffect(() => {
+    // Google Analytics
+    console.log(location.pathname);
+  }, [location]);
   return (
     <>
       <nav className={`navbar navbar-expand-lg  navbar-${mode} bg-${mode} sticky-top`}>
@@ -13,25 +20,25 @@ export default function Navbar({mode,mode1,toggleMode,modeText}) {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link active" accessKey='g' aria-current="page" to="/general">Home</Link>
+                <Link className={`nav-link ${location.pathname=== "/general"? "active" : ""} `}  aria-current="page" to="/general">Home</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" accessKey='b' to="/business">Business</Link>
+                <Link className={`nav-link ${location.pathname=== "/business"? "active" : ""} `}  to="/business">Business</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" accessKey='n' to="/entertainment">Entertainment</Link>
+                <Link className={`nav-link ${location.pathname=== "/entertainment"? "active" : ""} `}  to="/entertainment">Entertainment</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" accessKey='h' to="/health">Health</Link>
+                <Link className={`nav-link ${location.pathname=== "/health"? "active" : ""} `}  to="/health">Health</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" accessKey='s' to="/science">Science</Link>
+                <Link className={`nav-link ${location.pathname=== "/science"? "active" : ""} `}  to="/science">Science</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" accessKey='p' to="/sports">Sports</Link>
+                <Link className={`nav-link ${location.pathname=== "/sports"? "active" : ""} `}  to="/sports">Sports</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" accessKey='t' to="/technology">Technology</Link>
+                <Link className={`nav-link ${location.pathname=== "/technology"? "active" : ""} `}  to="/technology">Technology</Link>
               </li>
             </ul>
             <div className="form-check  form-switch">
