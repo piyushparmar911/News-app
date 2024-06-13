@@ -3,7 +3,7 @@ import React from 'react'
 export default function NewsItem({title, description,imageUrl,Date,author,source,mode,mode1, newsUrl}) {
   return (
     <div>
-      <div className="px-2 my-3 " >
+      <div className="px-2 my-3">
         <span className="badge bg-danger my-2">{source}</span>
         <div className={`card bg-${mode} ` }>
         <img className={`img-fluid img-thumbnail bg-${mode}`} style={{ height: "200px", width: "280px"}} src={imageUrl} alt="" />
